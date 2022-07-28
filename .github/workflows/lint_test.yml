@@ -15,6 +15,14 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: ./.github/actions/prep
+      env:
+        VAULT_PASS: ${{ secrets.VAULT_PASS }}
+    - name: hide credentials from the output
+      run: |
+        echo "::add-mask::$POSTGRES_USER"
+        echo "::add-mask::$POSTGRES_PASSWORD"
+        echo "::add-mask::$POSTGRES_DB"
     - uses: actions/checkout@v2
     - name: build docker containers
       run: |
